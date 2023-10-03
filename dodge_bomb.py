@@ -31,8 +31,20 @@ def main():
     """こうかとん"""
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    kk_img2 = pg.transform.flip(kk_img, True, False)
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900, 400)  # 練習３：こうかとんの初期座標を設定する
+    kk_lst={
+        (-5,0) :pg. transform.rotozoom (kk_img, 0,1.0),
+        (-5, -5):pg.transform.rotozoom (kk_img, -45, 1.0),
+        (0, -5) :pg. transform.rotozoom (kk_img2,90,1.0),
+        (5, -5) :pg. transform.rotozoom (kk_img2, 45,1.0),
+        (5,0) :pg. transform. rotozoom (kk_img2,0,1.0),
+        (5,5):pg.transform.rotozoom(kk_img2, -45,1.0),
+        (0, 5) :pg. transform.rotozoom(kk_img2, -90,1.0),
+        (-5, 5) :pg. transform.rotozoom(kk_img,45 ,1.0),
+        (0,0): kk_img
+        }
     """ばくだん"""
     bd_img = pg.Surface((20, 20))  # 練習１：爆弾Surfaceを作成する
     bd_img.set_colorkey((0, 0, 0))  # 練習１：黒い部分を透明にする
@@ -44,7 +56,6 @@ def main():
 
     kk_direction = 0
 
-    kk_lst = []
 
     clock = pg.time.Clock()
     tmr = 0
@@ -65,28 +76,14 @@ def main():
             if key_lst[key]:
                 sum_mv[0] += mv[0]  # 練習３：横方向の合計移動量
                 sum_mv[1] += mv[1]  # 練習３：縦方向の合計移動量
-                if key == pg.K_RIGHT:
-                    kk_direction = 0
-                elif key == pg.K_UP:
-                    kk_direction = 1
-                elif key == pg.K_DOWN:
-                    kk_direction = 2
-                elif key == pg.K_LEFT:
-                    kk_direction = 3
+                
+        kk_img = kk_lst[tuple(sum_mv)]
         kk_rct.move_ip(sum_mv[0], sum_mv[1])  # 練習３：移動させる
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
-        if kk_direction == 0:  # 右向き
-            rotated_kk_img = pg.transform.flip(kk_img, True, False)
-        elif kk_direction == 1:  # 上向き
-            rotated_kk_img = pg.transform.flip(pg.transform.rotate(kk_img, 90), False, True)
-        elif kk_direction == 2:  # 下向き
-            rotated_kk_img = pg.transform.flip(pg.transform.rotate(kk_img, 270), False, True)
-        elif kk_direction == 3:  # 左向き
-            rotated_kk_img = kk_img
 
-        screen.blit(rotated_kk_img, kk_rct)  # 練習３：移動後の座標に表示させる
+        screen.blit(kk_img, kk_rct)  # 練習３：移動後の座標に表示させる
         """"ばくだん"""
         bd_rct.move_ip(vx, vy)  # 練習２：爆弾を移動させ
         yoko, tate = check_bound(bd_rct)
@@ -95,6 +92,7 @@ def main():
         
         if not tate:
             vy *= -1
+
         screen.blit(bd_img, bd_rct)  # 練習１：Rectを使って試しにblit
         pg.display.update()
         tmr += 1

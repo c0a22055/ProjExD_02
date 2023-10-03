@@ -4,7 +4,7 @@ import random
 
 WIDTH, HEIGHT = 1600, 900
 
-
+#check
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))

@@ -44,6 +44,8 @@ def main():
 
     kk_direction = 0
 
+    kk_lst = []
+
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -82,7 +84,7 @@ def main():
         elif kk_direction == 2:  # 下向き
             rotated_kk_img = pg.transform.flip(pg.transform.rotate(kk_img, 270), False, True)
         elif kk_direction == 3:  # 左向き
-            rotated_kk_img = kk_img    
+            rotated_kk_img = kk_img
 
         screen.blit(rotated_kk_img, kk_rct)  # 練習３：移動後の座標に表示させる
         """"ばくだん"""
